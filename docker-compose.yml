@@ -1,0 +1,81 @@
+# EcoForge AI - full stack.
+#   docker compose up --build
+#   frontend  http://localhost:5173
+#   backend   http://localhost:8081  (swagger at /swagger-ui.html)
+#   ai        http://localhost:8001  (docs at /docs) - internal, exposed for debugging only
+name: ecoforge
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_DB: ecoforge
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ecoforge_local_2026
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${postgres} -d ${ecoforge}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+
+  ai-service:
+    build:
+      context: .
+      dockerfile: ai-service/Dockerfile
+    environment:
+      ECOFORGE_ENV: production
+      DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD}@localhost:5433/${POSTGRES_DB}
+      ECOFORGE_SERVICE_TOKEN: ${ECOFORGE_SERVICE_TOKEN}
+      ECOFORGE_CORS_ORIGINS: ""
+      ECOFORGE_LLM_PROVIDER: ${ECOFORGE_LLM_PROVIDER}
+      ECOFORGE_LLM_API_KEY: ${ECOFORGE_LLM_API_KEY}
+      ECOFORGE_LLM_MODEL: ${ECOFORGE_LLM_MODEL}
+      ECOFORGE_LLM_BASE_URL: ${ECOFORGE_LLM_BASE_URL}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "8001"
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    environment:
+      DATABASE_URL: ${jdbc:postgresql://postgres:5432/ecoforge}
+      DATABASE_USER: ${postgres}
+      DATABASE_PASSWORD: ${ecoforge_local_2026}
+      AI_SERVICE_URL: ${http://ai-service:8001}
+      ECOFORGE_SERVICE_TOKEN: ${96dd64f9ea45e849f4d76e37870590d1e23180c9514be26afd3e24c1b5006321}
+      JWT_SECRET: ${96dd64f9ea45e849f4d76e37870590d1e23180c9514be26afd3e24c1b5006321}
+      CORS_ORIGINS: ${http://localhost:5173}
+      SEED_DEMO: true
+    depends_on:
+      postgres:
+        condition: service_healthy
+      ai-service:
+        condition: service_started
+    ports:
+      - "8081"
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+      args:
+        VITE_API_BASE: /api
+    depends_on:
+      - backend
+    ports:
+      - "5173"
+    restart: unless-stopped
+
+volumes:
+  pgdata:

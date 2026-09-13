@@ -1,0 +1,22 @@
+# build output
+node_modules/
+frontend/dist/
+backend/target/
+**/__pycache__/
+*.pyc
+.venv/
+
+# secrets - never commit
+.env
+*.pem
+*.key
+
+.env
+.env.local
+.env.production
+
+# local scratch
+data/processed/*.csv
+data/processed/*.json
+!data/processed/.gitkeep
+.DS_Store

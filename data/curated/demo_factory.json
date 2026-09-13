@@ -1,0 +1,56 @@
+{
+  "note": "Demo factory for the HackOut'26 walkthrough. ONLY the operational inputs are stored here. Every emission, leak, recommendation, cost and scenario value is CALCULATED at runtime from CEA v22.0 / EPA 2025 / UK 2026 factors. Nothing downstream of these inputs is hard-coded.",
+  "factory": {
+    "factory_id": "demo-shakti-castings",
+    "name": "Shakti Precision Castings Pvt Ltd",
+    "industry": "Automotive components / ferrous casting and machining",
+    "country_code": "IN",
+    "state_or_region": "Gujarat",
+    "city": "Rajkot",
+    "grid_region": null,
+    "reporting_year": 2026,
+    "annual_production": 2400,
+    "production_unit": "tonnes of finished castings",
+    "employees": 68,
+    "budget_inr": 1500000,
+    "target_reduction_pct": 20,
+    "electricity_tariff_inr_per_kwh": 8.4,
+    "diesel_price_inr_per_litre": 92.0,
+    "gas_price_inr_per_m3": 48.0,
+    "lpg_price_inr_per_kg": 95.0,
+    "waste_disposal_cost_inr_per_tonne": 1400.0,
+    "roof_area_m2": 3200,
+    "currency": "INR"
+  },
+  "energy": [
+    {"record_id": "e1", "label": "Grid electricity (whole site)", "key": "ELECTRICITY", "quantity": 480000, "unit": "kWh", "period": "YEAR", "data_quality": "INVOICED", "provenance": "FILE_UPLOAD"},
+    {"record_id": "e2", "label": "Diesel - DG set and forklifts", "key": "DIESEL", "quantity": 26000, "unit": "litres", "period": "YEAR", "data_quality": "INVOICED", "provenance": "FILE_UPLOAD"},
+    {"record_id": "e3", "label": "Piped natural gas - heat treatment furnace", "key": "NATURAL_GAS", "quantity": 96000, "unit": "m3", "period": "YEAR", "data_quality": "INVOICED", "provenance": "FILE_UPLOAD"},
+    {"record_id": "e4", "label": "LPG - cutting and preheating", "key": "LPG", "quantity": 7.5, "unit": "tonnes", "period": "YEAR", "data_quality": "ESTIMATED", "provenance": "MANUAL"}
+  ],
+  "materials": [
+    {"record_id": "m1", "label": "Metal charge - pig iron and purchased scrap", "key": "METAL_CHARGE", "material": "metals", "quantity": 1850, "unit": "tonnes", "period": "YEAR", "recycled_content_pct": 35, "function": "metal charge", "supplier_region": "Gujarat", "data_quality": "ESTIMATED", "provenance": "MANUAL"},
+    {"record_id": "m2", "label": "Silica sand - green sand moulding", "key": "SILICA_SAND", "material": "silica sand", "material_grade": "AFS GFN 55-60", "quantity": 310, "unit": "tonnes", "period": "YEAR", "function": "moulding", "supplier_region": "Rajasthan", "data_quality": "ESTIMATED", "provenance": "MANUAL"}
+  ],
+  "processes": [
+    {"process_name": "Melting (induction furnace)", "process_type": "melting", "machine_type": "Induction furnace 1.5 t", "operating_hours": 3600, "energy_share_pct": 58, "output_quantity": 2650, "output_unit": "tonnes", "scrap_rate_pct": 9.4, "operating_temp_c": 1450},
+    {"process_name": "Green sand moulding", "process_type": "moulding", "machine_type": "Jolt-squeeze line", "operating_hours": 3400, "energy_share_pct": 11, "output_quantity": 2650, "output_unit": "tonnes", "scrap_rate_pct": 3.1},
+    {"process_name": "Heat treatment", "process_type": "heat treatment", "machine_type": "Gas-fired bogie hearth", "operating_hours": 2100, "energy_share_pct": 6, "output_quantity": 2400, "output_unit": "tonnes", "operating_temp_c": 900},
+    {"process_name": "Fettling and shot blasting", "process_type": "surface preparation", "machine_type": "Wheel blast + grinders", "operating_hours": 3900, "energy_share_pct": 14, "output_quantity": 2400, "output_unit": "tonnes", "scrap_rate_pct": 1.2},
+    {"process_name": "Machining", "process_type": "machining", "machine_type": "CNC cells", "operating_hours": 3800, "energy_share_pct": 11, "output_quantity": 2400, "output_unit": "tonnes", "scrap_rate_pct": 2.0}
+  ],
+  "waste": [
+    {"record_id": "w1", "label": "Spent foundry sand", "key": "SAND_WASTE", "material": "soils", "quantity": 240, "unit": "tonnes", "period": "YEAR", "treatment": "LANDFILL", "data_quality": "ESTIMATED", "provenance": "MANUAL"},
+    {"record_id": "w2", "label": "Metal returns sold as scrap", "key": "METAL_SCRAP", "material": "metals", "quantity": 95, "unit": "tonnes", "period": "YEAR", "treatment": "RECYCLED", "data_quality": "MEASURED", "provenance": "MANUAL"}
+  ],
+  "history": [
+    {"period": "2025-10", "production": 198, "values": {"electricity_kwh": 39200, "diesel_litres": 2150, "gas_m3": 7900}},
+    {"period": "2025-11", "production": 205, "values": {"electricity_kwh": 40100, "diesel_litres": 2080, "gas_m3": 8100}},
+    {"period": "2025-12", "production": 187, "values": {"electricity_kwh": 37600, "diesel_litres": 2260, "gas_m3": 7600}},
+    {"period": "2026-01", "production": 212, "values": {"electricity_kwh": 41800, "diesel_litres": 2190, "gas_m3": 8400}},
+    {"period": "2026-02", "production": 196, "values": {"electricity_kwh": 38900, "diesel_litres": 2110, "gas_m3": 7800}},
+    {"period": "2026-03", "production": 221, "values": {"electricity_kwh": 43500, "diesel_litres": 2240, "gas_m3": 8700}},
+    {"period": "2026-04", "production": 203, "values": {"electricity_kwh": 40400, "diesel_litres": 2170, "gas_m3": 8000}},
+    {"period": "2026-05", "production": 190, "values": {"electricity_kwh": 46900, "diesel_litres": 2120, "gas_m3": 7700}}
+  ]
+}

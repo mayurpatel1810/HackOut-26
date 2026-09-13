@@ -1,0 +1,56 @@
+spring:
+  application:
+    name: ecoforge-backend
+  datasource:
+    url: ${jdbc:postgresql://localhost:5433/ecoforge?stringtype=unspecified}
+    username: ${postgres}
+    password: ${ecoforge_local_2026}
+    hikari:
+      maximum-pool-size: 10
+  jpa:
+    hibernate:
+      ddl-auto: validate        # Flyway owns the schema. Hibernate never alters it.
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc.time_zone: UTC
+        format_sql: false
+  flyway:
+    enabled: true
+    locations: ${filesystem:../database/migrations}
+    baseline-on-migrate: true
+  jackson:
+    default-property-inclusion: non_null
+
+server:
+  port: ${8081}
+  error:
+    include-stacktrace: never
+  compression:
+    enabled: true
+
+ecoforge:
+  ai-service:
+    base-url: ${http://localhost:8001}
+    token: ${96dd64f9ea45e849f4d76e37870590d1e23180c9514be26afd3e24c1b5006321}
+    timeout-seconds: 90
+  security:
+    jwt-secret: ${96dd64f9ea45e849f4d76e37870590d1e23180c9514be26afd3e24c1b5006321}
+    jwt-ttl-minutes: 720
+    cors-origins: ${http://localhost:5173},${http://localhost:3000}
+  demo:
+    seed-on-startup: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: when-authorized
+
+logging:
+  level:
+    root: INFO
+    ai.ecoforge: INFO

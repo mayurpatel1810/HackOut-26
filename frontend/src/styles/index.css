@@ -1,0 +1,215 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------------------------------------------------------------------------
+   Design tokens. Light is the default working theme; dark is the control-room
+   theme. Both define the SAME token set, so no component ever needs a
+   theme-specific colour.
+   --------------------------------------------------------------------------- */
+:root {
+  --c-canvas: 244 246 248;
+  --c-surface: 255 255 255;
+  --c-raised: 250 251 252;
+  --c-sunken: 240 242 245;
+  --c-line: 228 231 236;
+  --c-line-strong: 208 213 221;
+
+  --c-ink-900: 13 22 35;
+  --c-ink-700: 52 64 84;
+  --c-ink-500: 93 105 123;
+  --c-ink-400: 134 145 161;
+  --c-ink-300: 176 184 196;
+
+  --c-brand-50: 236 246 242;
+  --c-brand-100: 209 235 224;
+  --c-brand-500: 18 135 100;
+  --c-brand-600: 14 107 79;
+  --c-brand-700: 11 74 56;
+  --c-brand-900: 6 40 31;
+
+  --c-critical: 180 35 24;
+  --c-critical-soft: 254 243 242;
+  --c-high: 196 50 10;
+  --c-high-soft: 255 244 237;
+  --c-medium: 181 71 8;
+  --c-medium-soft: 255 250 235;
+  --c-good: 6 118 71;
+  --c-good-soft: 236 253 243;
+  --c-info: 23 92 211;
+  --c-info-soft: 239 244 255;
+  --c-neutral: 71 84 103;
+
+  --grid-line: 228 231 236;
+  color-scheme: light;
+
+  /* Categorical chart hues. Assigned in this fixed order and never cycled.
+     Validated with the dataviz palette validator against this surface:
+     lightness band PASS, chroma floor PASS, CVD separation PASS (worst
+     adjacent pair rose/cyan dE 9.6 deutan), normal-vision floor PASS,
+     contrast PASS. Every chart also carries direct labels or a legend, so
+     identity is never colour alone. */
+  --cat-1: 11 132 87;
+  --cat-2: 26 98 224;
+  --cat-3: 210 98 10;
+  --cat-4: 123 63 244;
+  --cat-5: 14 155 184;
+  --cat-6: 199 53 122;
+  --chart-surface: 255 255 255;
+}
+
+:root[data-theme='dark'] {
+  --c-canvas: 10 15 22;
+  --c-surface: 17 24 33;
+  --c-raised: 22 30 41;
+  --c-sunken: 13 19 27;
+  --c-line: 35 45 58;
+  --c-line-strong: 52 66 84;
+
+  --c-ink-900: 233 238 244;
+  --c-ink-700: 200 209 220;
+  --c-ink-500: 154 166 181;
+  --c-ink-400: 124 137 153;
+  --c-ink-300: 96 109 125;
+
+  --c-brand-50: 10 38 30;
+  --c-brand-100: 14 56 43;
+  --c-brand-500: 52 183 140;
+  --c-brand-600: 33 156 116;
+  --c-brand-700: 22 118 88;
+  --c-brand-900: 209 235 224;
+
+  --c-critical: 240 104 92;
+  --c-critical-soft: 48 20 18;
+  --c-high: 245 129 79;
+  --c-high-soft: 48 26 15;
+  --c-medium: 235 168 62;
+  --c-medium-soft: 45 33 12;
+  --c-good: 63 196 138;
+  --c-good-soft: 12 40 29;
+  --c-info: 105 156 250;
+  --c-info-soft: 17 28 51;
+  --c-neutral: 154 166 181;
+
+  --grid-line: 35 45 58;
+  color-scheme: dark;
+
+  /* Dark mode is SELECTED, not an automatic flip: its own steps, re-validated
+     against the dark chart surface (#111821). Lightness band PASS, chroma
+     floor PASS, CVD PASS, normal-vision floor PASS, contrast PASS. */
+  --cat-1: 31 163 122;
+  --cat-2: 76 134 240;
+  --cat-3: 206 116 34;
+  --cat-4: 146 104 232;
+  --cat-5: 13 149 174;
+  --cat-6: 218 90 142;
+  --chart-surface: 17 24 33;
+}
+
+@layer base {
+  * { border-color: rgb(var(--c-line)); }
+
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    @apply bg-canvas text-ink-700 font-sans antialiased;
+    font-size: 0.875rem;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  }
+
+  /* Numbers must line up in tables and KPI tiles. */
+  .tnum { font-variant-numeric: tabular-nums; font-feature-settings: 'tnum' 1; }
+
+  h1, h2, h3, h4 { @apply text-ink-900 font-semibold; }
+
+  ::selection { background: rgb(var(--c-brand-500) / 0.18); }
+
+  :focus-visible {
+    outline: 2px solid rgb(var(--c-brand-500));
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-thumb {
+    background: rgb(var(--c-line-strong));
+    border-radius: 999px;
+    border: 3px solid rgb(var(--c-canvas));
+  }
+  ::-webkit-scrollbar-track { background: transparent; }
+
+  input, select, textarea { @apply bg-surface text-ink-900; }
+}
+
+@layer components {
+  .panel { @apply bg-surface rounded-lg border border-line shadow-xs; }
+
+  .panel-header {
+    @apply flex items-start justify-between gap-4 px-5 py-4 border-b border-line;
+  }
+
+  .panel-title { @apply text-ink-900 font-semibold text-md leading-tight; }
+  .panel-sub { @apply text-ink-400 text-xs mt-0.5 leading-relaxed; }
+
+  .label-eyebrow {
+    @apply text-2xs font-semibold uppercase tracking-wider text-ink-400;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded font-medium
+           text-base transition-colors duration-150 ease-industrial
+           disabled:opacity-45 disabled:pointer-events-none select-none;
+  }
+  .btn-md { @apply h-9 px-4; }
+  .btn-sm { @apply h-8 px-3 text-sm; }
+  .btn-lg { @apply h-11 px-6 text-md; }
+  .btn-primary { @apply btn bg-brand-600 text-white hover:bg-brand-700; }
+  .btn-secondary {
+    @apply btn bg-surface text-ink-900 border border-line-strong hover:bg-raised;
+  }
+  .btn-ghost { @apply btn text-ink-500 hover:bg-sunken hover:text-ink-900; }
+  .btn-danger { @apply btn bg-critical text-white hover:opacity-90; }
+
+  .field-label { @apply block text-sm font-medium text-ink-700 mb-1.5; }
+
+  .field {
+    @apply w-full h-9 rounded border border-line-strong bg-surface px-3 text-base
+           text-ink-900 placeholder:text-ink-300
+           focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20
+           transition-shadow duration-150;
+  }
+  .field-invalid { @apply border-critical focus:border-critical focus:ring-critical/20; }
+  .field-help { @apply text-xs text-ink-400 mt-1.5 leading-relaxed; }
+  .field-error { @apply text-xs text-critical mt-1.5; }
+
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full px-2.5 h-6
+           text-2xs font-semibold uppercase tracking-wide;
+  }
+
+  .table-cell { @apply px-4 py-3 text-base align-top; }
+  .table-head {
+    @apply px-4 py-2.5 text-2xs font-semibold uppercase tracking-wider
+           text-ink-400 text-left bg-raised border-y border-line;
+  }
+
+  .skeleton {
+    @apply relative overflow-hidden bg-sunken rounded;
+  }
+  .skeleton::after {
+    content: '';
+    @apply absolute inset-0 -translate-x-full animate-shimmer;
+    background-image: linear-gradient(90deg, transparent,
+      rgb(var(--c-surface) / 0.65), transparent);
+  }
+
+  .scroll-x { @apply overflow-x-auto; -webkit-overflow-scrolling: touch; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
